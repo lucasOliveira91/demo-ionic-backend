@@ -1,13 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.domain.Category;
-import com.example.demo.domain.City;
-import com.example.demo.domain.Product;
-import com.example.demo.domain.State;
-import com.example.demo.repository.CategoryRepository;
-import com.example.demo.repository.CityRepository;
-import com.example.demo.repository.ProductRepository;
-import com.example.demo.repository.StateRepository;
+import com.example.demo.domain.*;
+import com.example.demo.domain.enums.CustumerType;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,13 +18,19 @@ public class DemoApplication implements CommandLineRunner{
 	private CategoryRepository categoryRepository;
 
 	@Autowired
-		private ProductRepository productRepository;
+	private ProductRepository productRepository;
 
 	@Autowired
 	private StateRepository stateRepository;
 
 	@Autowired
 	private CityRepository cityRepository;
+
+	@Autowired
+	private AddressRepository addressRepository;
+
+	@Autowired
+	private CustumerRepository custumerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -64,13 +65,20 @@ public class DemoApplication implements CommandLineRunner{
 		stateRepository.save(s1);
 		stateRepository.save(s2);
 
-		cityRepository.save(city1);
-		cityRepository.save(city2);
-		cityRepository.save(city3);
+		cityRepository.saveAll(Arrays.asList(city1, city2, city3));
+		categoryRepository.saveAll(Arrays.asList(c1, c2));
 
-
-		categoryRepository.save(c1);
-		categoryRepository.save(c2);
 		productRepository.save(p1);
+
+		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com","00000000000", CustumerType.PESSOA_FISICA);
+		cus.getCelPhones().addAll(Arrays.asList("6134346278", "61992081000"));
+
+		Address adress1 = new Address(null, "Rua 10", "Campinas","ap", "200", "00000000", city1, cus);
+		Address adress2 = new Address(null, "Avenida Matos", "Campinas","ap", "200", "00000000", city2, cus);
+
+		cus.getAddresses().addAll(Arrays.asList(adress1, adress2));
+
+		custumerRepository.save(cus);
+		addressRepository.saveAll(Arrays.asList(adress1, adress2));
 	}
 }
