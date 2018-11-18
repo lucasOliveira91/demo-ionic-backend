@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import com.example.demo.domain.enums.PayStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,9 @@ import javax.persistence.Entity;
 public class CreditCardPayment extends Payment{
 
     private Integer numInstallments;
+
+    public CreditCardPayment(Integer id, PayStatus payStatus, Order order, Integer numInstallments) {
+        super(id, payStatus, order);
+        this.numInstallments = numInstallments;
+    }
 }

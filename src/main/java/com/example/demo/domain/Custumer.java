@@ -38,6 +38,7 @@ public class Custumer {
     @OneToMany(mappedBy = "custumer")
     private List<Address> addresses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "custumer")
     private List<Order> orders = new ArrayList<>();
 
     public Custumer(Integer id, String name, String email, String cpfCnpj, CustumerType custumerType) {

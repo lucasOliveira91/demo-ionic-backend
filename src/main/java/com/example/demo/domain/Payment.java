@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * Created by loliveira on 17/11/18.
@@ -14,9 +14,21 @@ import javax.persistence.Entity;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payment {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Payment {
 
+    @Id
     private Integer id;
-    private PayStatus payStatus;
+    private Integer payStatus;
+
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    @MapsId
     private Order order;
+
+    public Payment(Integer id, PayStatus payStatus, Order order) {
+        this.id = id;
+        this.payStatus = payStatus.getId();
+        this.order = order;
+    }
 }
