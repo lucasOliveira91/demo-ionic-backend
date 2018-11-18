@@ -1,7 +1,9 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Address {
 
     @Id
@@ -26,6 +29,7 @@ public class Address {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "custumer_id")
     private Custumer custumer;
