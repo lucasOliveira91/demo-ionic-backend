@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Category;
+import com.example.demo.dto.CategoryDTO;
 import com.example.demo.exception.DataIntegrityException;
 import com.example.demo.exception.ObjectNotFoundException;
 import com.example.demo.repository.CategoryRepository;
@@ -27,14 +28,14 @@ public class CategoryService {
             new ObjectNotFoundException("Objeto não encontrado! Id:" + id + " " + Category.class.getName()));
     }
 
-    public Category insert(Category obj) {
+    public Category insert(CategoryDTO obj) {
         obj.setId(null);
-        return repository.save(obj);
+        return repository.save(CategoryDTO.toEntity(obj));
     }
 
-    public Category update(Category obj) {
+    public Category update(CategoryDTO obj) {
         find(obj.getId());
-        return repository.save(obj);
+        return repository.save(CategoryDTO.toEntity(obj));
     }
 
     public void delete(Integer id) {
@@ -55,4 +56,5 @@ public class CategoryService {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
     }
+
 }

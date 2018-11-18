@@ -12,9 +12,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StandardError {
+public class FieldMessage {
 
-    private Integer status;
-    private String msg;
-    private Long timeStamp;
+    private String fieldName;
+    private String message;
 }
