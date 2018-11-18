@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,16 +28,17 @@ public class Product {
     private String name;
     private Double price;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "PRODUCT_CATEGORY",
                 joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    Set<OrderItem> items = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
 
-    List<Order> orders = new ArrayList<>();
-
+    @JsonIgnore
     public List<Order> getOrders () {
         List<Order> list = new ArrayList<>();
         for(OrderItem item: items) {

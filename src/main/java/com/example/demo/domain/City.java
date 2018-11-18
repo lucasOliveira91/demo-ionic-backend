@@ -1,7 +1,5 @@
 package com.example.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +20,6 @@ public class City {
     private Integer id;
     private String name;
 
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;

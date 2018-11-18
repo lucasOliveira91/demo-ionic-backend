@@ -1,7 +1,7 @@
 package com.example.demo.domain;
 
 import com.example.demo.domain.enums.CustumerType;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,10 +34,10 @@ public class Custumer {
     @CollectionTable(name = "telefone")
     private Set<String> celPhones = new HashSet<>();
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "custumer")
     private List<Address> addresses = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "custumer")
     private List<Order> orders = new ArrayList<>();
 

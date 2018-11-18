@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class State {
     private Integer id;
     private String name;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "state")
     private List<City> cities = new ArrayList<>();
 }

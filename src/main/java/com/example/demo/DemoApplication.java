@@ -13,9 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 
 @SpringBootApplication
-public class DemoApplication implements CommandLineRunner{
+public class DemoApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -41,6 +42,9 @@ public class DemoApplication implements CommandLineRunner{
 	@Autowired
 	private PaymentRepository paymentRepository;
 
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
@@ -48,11 +52,11 @@ public class DemoApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		Category c1 = new Category(null, "Informatic", new ArrayList<>());
-		Category c2 = new Category(null, "Office",  new ArrayList<>());
+		Category c2 = new Category(null, "Office", new ArrayList<>());
 
-		Product p1 =  new Product(null, "Computer", 2000.00,  new ArrayList<>());
-		Product p2 =  new Product(null, "Printer", 800.00,  new ArrayList<>());
-		Product p3 =  new Product(null, "Mouse", 230.00,  new ArrayList<>());
+		Product p1 = new Product(null, "Computer", 2000.00,  new ArrayList<>(), new HashSet<>());
+		Product p2 = new Product(null, "Printer", 800.00, new ArrayList<>(), new HashSet<>());
+		Product p3 = new Product(null, "Mouse", 230.00, new ArrayList<>(), new HashSet<>());
 
 		c1.getProducts().addAll(Arrays.asList(p1, p2, p3));
 		c2.getProducts().addAll(Arrays.asList(p2));
@@ -79,11 +83,11 @@ public class DemoApplication implements CommandLineRunner{
 
 		productRepository.save(p1);
 
-		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com","00000000000", CustumerType.PESSOA_FISICA);
+		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com", "00000000000", CustumerType.PESSOA_FISICA);
 		cus.getCelPhones().addAll(Arrays.asList("6134346278", "61992081000"));
 
-		Address adress1 = new Address(null, "Rua 10", "Campinas","ap", "200", "00000000", city1, cus);
-		Address adress2 = new Address(null, "Avenida Matos", "Campinas","ap", "200", "00000000", city2, cus);
+		Address adress1 = new Address(null, "Rua 10", "Campinas", "ap", "200", "00000000", city1, cus);
+		Address adress2 = new Address(null, "Avenida Matos", "Campinas", "ap", "200", "00000000", city2, cus);
 
 		cus.getAddresses().addAll(Arrays.asList(adress1, adress2));
 
@@ -91,18 +95,31 @@ public class DemoApplication implements CommandLineRunner{
 		addressRepository.saveAll(Arrays.asList(adress1, adress2));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		Order order1 = new Order(null, sdf.parse("30/09/2018 10:22"),null, cus, adress1);
-		Order order2 = new Order(null, sdf.parse("10/10/2018 10:22"),null, cus, adress2);
+		Order order1 = new Order(null, sdf.parse("30/09/2018 10:22"), null, cus, adress1, new HashSet<>());
+		Order order2 = new Order(null, sdf.parse("10/10/2018 10:22"), null, cus, adress2, new HashSet<>());
 
 		Payment pay1 = new CreditCardPayment(null, PayStatus.SETTLED, order1, 6);
 		order1.setPayment(pay1);
 
 		Payment pay2 = new TicketPayment(null, PayStatus.SETTLED, order2, sdf.parse("20/10/2018 00:00"), null);
-		order1.setPayment(pay2);
+		order2.setPayment(pay2);
 
 		cus.getOrders().addAll(Arrays.asList(order1, order2));
 
 		orderRepository.saveAll(Arrays.asList(order1, order2));
-//		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+
+		OrderItem oi1 = new OrderItem(order1, p1, 0.0, 1, 2000.00);
+		OrderItem oi2 = new OrderItem(order1, p3, 0.0, 2, 80.00);
+		OrderItem oi3 = new OrderItem(order2, p3, 0.0, 1, 800.00);
+
+		order1.getItems().addAll(Arrays.asList(oi1, oi2));
+		order2.getItems().addAll(Arrays.asList(oi3));
+
+		p1.getItems().addAll(Arrays.asList(oi1));
+		p2.getItems().addAll(Arrays.asList(oi3));
+		p3.getItems().addAll(Arrays.asList(oi2));
+
+		orderItemRepository.saveAll(Arrays.asList(oi1		));
 	}
 }

@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
 import com.example.demo.domain.enums.PayStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ public abstract class Payment {
     private Integer id;
     private Integer payStatus;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "order_id")
     @MapsId
