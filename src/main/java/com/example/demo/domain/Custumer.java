@@ -46,6 +46,6 @@ public class Custumer {
         this.name = name;
         this.email = email;
         this.cpfCnpj = cpfCnpj;
-        this.custumerType = custumerType.getId();
+        this.custumerType = custumerType != null ? custumerType.getId() : null;
     }
 }

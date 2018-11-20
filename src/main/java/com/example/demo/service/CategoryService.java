@@ -34,8 +34,8 @@ public class CategoryService {
     }
 
     public Category update(CategoryDTO obj) {
-        find(obj.getId());
-        return repository.save(CategoryDTO.toEntity(obj));
+        Category category = find(obj.getId());
+        return repository.save(updateData(obj, category));
     }
 
     public void delete(Integer id) {
@@ -57,4 +57,9 @@ public class CategoryService {
         return repository.findAll(pageRequest);
     }
 
+    private Category updateData(CategoryDTO newCategory, Category category) {
+        category.setName(newCategory.getName());
+
+        return category;
+    }
 }
