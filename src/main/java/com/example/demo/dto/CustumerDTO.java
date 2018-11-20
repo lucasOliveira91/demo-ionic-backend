@@ -23,7 +23,6 @@ public class CustumerDTO {
     @Length(min = 5, message = "at least 5 caracters")
     private String name;
 
-
     @NotEmpty
     @Email(message = "Invalid email")
     private String email;

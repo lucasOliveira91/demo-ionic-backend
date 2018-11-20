@@ -34,7 +34,7 @@ public class Custumer {
     @CollectionTable(name = "telefone")
     private Set<String> celPhones = new HashSet<>();
 
-    @OneToMany(mappedBy = "custumer")
+    @OneToMany(mappedBy = "custumer", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
     @JsonIgnore

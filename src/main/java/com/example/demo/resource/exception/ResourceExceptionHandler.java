@@ -25,7 +25,7 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(DataIntegrityException.class)
     public ResponseEntity<StandardError> DataIntegrity(DataIntegrityException e, HttpServletRequest request) {
-        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Erro de validação.", System.currentTimeMillis());
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "DataIntegrity Violation..", System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
