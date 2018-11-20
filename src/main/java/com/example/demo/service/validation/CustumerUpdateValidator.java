@@ -1,43 +1,45 @@
 package com.example.demo.service.validation;
 
+import com.example.demo.domain.Custumer;
 import com.example.demo.domain.enums.CustumerType;
+import com.example.demo.dto.CustumerDTO;
 import com.example.demo.dto.CustumerNewDTO;
 import com.example.demo.repository.CustumerRepository;
 import com.example.demo.resource.exception.FieldMessage;
 import com.example.demo.service.validation.utils.B;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by loliveira on 20/11/18.
  */
-public class CustumerInsertValidator implements ConstraintValidator<CustumerInsert, CustumerNewDTO> {
+public class CustumerUpdateValidator implements ConstraintValidator<CustumerUpdate, CustumerDTO> {
 
     @Autowired
     CustumerRepository custumerRepository;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @Override
-    public void initialize(CustumerInsert ann) {
+    public void initialize(CustumerUpdate ann) {
     }
 
     @Override
-    public boolean isValid(CustumerNewDTO type, ConstraintValidatorContext context) {
+    public boolean isValid(CustumerDTO type, ConstraintValidatorContext context) {
+        Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Integer uriId = Integer.parseInt(map.get("id"));
         List<FieldMessage> list = new ArrayList<>();
 
-        //add your code validation
-        if(type.getCustumerType().equals(CustumerType.PESSOA_FISICA.getId()) && !B.isValidCPF(type.getCpfCnpj())){
-            list.add(new FieldMessage("cpfCnpj","Invalid number"));
-        }
-
-        if(type.getCustumerType().equals(CustumerType.PESSOA_JURIDICA.getId()) && !B.isValidCPF(type.getCpfCnpj())){
-            list.add(new FieldMessage("cpfCnpj","Invalid number"));
-        }
-
-        if(custumerRepository.findByEmail(type.getEmail()) != null) {
+        Custumer byEmail = custumerRepository.findByEmail(type.getEmail());
+        if(byEmail != null && !uriId.equals(type.getId())) {
             list.add(new FieldMessage("email","email already exists."));
         }
 
