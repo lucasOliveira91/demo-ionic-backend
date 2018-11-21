@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.domain.Custumer;
+import com.example.demo.service.validation.CustumerUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@CustumerUpdate
 public class CustumerDTO {
 
     private Integer id;
