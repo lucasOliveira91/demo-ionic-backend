@@ -1,24 +1,25 @@
 package com.example.demo.domain;
 
 import com.example.demo.domain.enums.PayStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by loliveira on 17/11/18.
  */
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Payment {
-
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+public abstract class Payment implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     private Integer id;
     private Integer payStatus;

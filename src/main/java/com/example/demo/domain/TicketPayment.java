@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import com.example.demo.domain.enums.PayStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonTypeName("ticketPayment")
 public class TicketPayment extends Payment{
 
     @JsonFormat(pattern = "dd/MM/yyyy")
