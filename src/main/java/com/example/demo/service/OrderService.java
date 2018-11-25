@@ -38,6 +38,9 @@ public class OrderService {
     @Autowired
     private CustumerService custumerService;
 
+    @Autowired
+    private EmailService emailService;
+
     public Order find(Integer id) {
         return orderRepository.findById(id).orElseThrow(() ->
             new ObjectNotFoundException("Objeto não encontrado! Id:" + id + " " + Category.class.getName()));
@@ -67,6 +70,7 @@ public class OrderService {
         }
 
         itemRepository.saveAll(obj.getItems());
+        emailService.OrderConfirmationEmail(obj);
         return obj;
     }
 }

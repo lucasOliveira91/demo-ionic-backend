@@ -1,2 +1,7 @@
 spring:
-  profile: test
+  profileS:
+    active: dev
+
+default:
+  sender: lukys.taylor@gmail.com
+  recipent: lukys.taylor@gmail.com

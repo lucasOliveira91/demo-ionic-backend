@@ -1,5 +1,4 @@
 spring:
-  prifile: dev
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/demo
@@ -9,3 +8,17 @@ spring:
     hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    username: lukys.taylor@gmail.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+          starttls.enable: true;
+          ssl.enable: true;
