@@ -9,6 +9,7 @@ import com.example.demo.repository.PaymentRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -46,6 +47,7 @@ public class OrderService {
             new ObjectNotFoundException("Objeto não encontrado! Id:" + id + " " + Category.class.getName()));
     }
 
+    @Transactional
     public Order insert(@Valid Order obj) {
         obj.setId(null);
         obj.setInstant(new Date());
@@ -70,7 +72,7 @@ public class OrderService {
         }
 
         itemRepository.saveAll(obj.getItems());
-        emailService.OrderConfirmationEmail(obj);
+        emailService.OrderConfirmationEmailHtml(obj);
         return obj;
     }
 }

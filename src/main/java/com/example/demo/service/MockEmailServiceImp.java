@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.MimeMessage;
+
 /**
  * Created by loliveira on 24/11/18.
  */
@@ -24,6 +26,18 @@ public class MockEmailServiceImp implements EmailService {
     @Override
     public void sendEmail(SimpleMailMessage msg) {
         log.info("Email Simulation.");
+        log.info(msg.toString());
+        log.info("Email sent.   ");
+    }
+
+    @Override
+    public void OrderConfirmationEmailHtml(Order order) {
+
+    }
+
+    @Override
+    public void sendEmailHtml(MimeMessage msg) {
+        log.info("Email HTML Simulation.");
         log.info(msg.toString());
         log.info("Email sent.   ");
     }
