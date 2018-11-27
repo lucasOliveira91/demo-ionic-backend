@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.domain.*;
 import com.example.demo.domain.enums.CustumerType;
 import com.example.demo.domain.enums.PayStatus;
+import com.example.demo.domain.enums.Role;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -83,16 +84,22 @@ public class DemoApplication implements CommandLineRunner {
 
 		productRepository.save(p1);
 
-		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com", "00000000000", CustumerType.PESSOA_FISICA);
+		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com", "00000000000", CustumerType.PESSOA_FISICA, "123");
 		cus.getCelPhones().addAll(Arrays.asList("6134346278", "61992081000"));
+
+		Custumer cus2 = new Custumer(null, "Lucas Daniel", "lukys.taylor@gmail.com", "00000000000", CustumerType.PESSOA_FISICA, "123");
+		cus2.addRole(Role.ADMIN);
+		cus2.getCelPhones().addAll(Arrays.asList("6134346278", "61992081000"));
 
 		Address adress1 = new Address(null, "Rua 10", "Campinas", "ap", "200", "00000000", city1, cus);
 		Address adress2 = new Address(null, "Avenida Matos", "Campinas", "ap", "200", "00000000", city2, cus);
+		Address adress3 = new Address(null, "Rua 10", "Campinas", "ap", "200", "00000000", city2, cus);
 
 		cus.getAddresses().addAll(Arrays.asList(adress1, adress2));
+		cus2.getAddresses().addAll(Arrays.asList(adress1, adress3));
 
-		custumerRepository.save(cus);
-		addressRepository.saveAll(Arrays.asList(adress1, adress2));
+		custumerRepository.saveAll(Arrays.asList(cus, cus2));
+		addressRepository.saveAll(Arrays.asList(adress1, adress2, adress3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Order order1 = new Order(null, sdf.parse("30/09/2018 10:22"), null, cus, adress1, new HashSet<>());

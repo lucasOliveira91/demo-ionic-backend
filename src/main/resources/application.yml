@@ -5,3 +5,8 @@ spring:
 default:
   sender: lukys.taylor@gmail.com
   recipent: lukys.taylor@gmail.com
+
+#miliseconds
+jwt:
+  secret: CaractererSequence
+  expiration: 60000

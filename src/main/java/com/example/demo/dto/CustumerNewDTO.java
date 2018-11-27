@@ -48,4 +48,8 @@ public class CustumerNewDTO {
     private String celPhone3;
 
     private Integer cityId;
+
+    @NotEmpty(message = "Required")
+    private String password;
+
 }

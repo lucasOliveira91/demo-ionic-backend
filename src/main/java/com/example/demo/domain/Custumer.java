@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import com.example.demo.domain.enums.Role;
 
 /**
  * Created by loliveira on 17/11/18.
@@ -18,7 +20,6 @@ import java.util.Set;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Custumer {
 
 
@@ -29,6 +30,9 @@ public class Custumer {
     private String email;
     private String cpfCnpj;
     private Integer custumerType;
+
+    @JsonIgnore
+    private String password;
 
     @ElementCollection
     @CollectionTable(name = "telefone")
@@ -41,11 +45,30 @@ public class Custumer {
     @OneToMany(mappedBy = "custumer")
     private List<Order> orders = new ArrayList<>();
 
-    public Custumer(Integer id, String name, String email, String cpfCnpj, CustumerType custumerType) {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "roles")
+    private Set<Integer> roles = new HashSet<>();
+
+    public Custumer() {
+        addRole(Role.CUSTUMER);
+    }
+
+    public Custumer(Integer id, String name, String email, String cpfCnpj, CustumerType custumerType, String password) {
+        addRole(Role.CUSTUMER);
+
         this.id = id;
         this.name = name;
         this.email = email;
         this.cpfCnpj = cpfCnpj;
         this.custumerType = custumerType != null ? custumerType.getId() : null;
+        this.password = password;
+    }
+
+    public Set<Role> getRoles () {
+        return roles.stream().map(r -> Role.toEnum(r)).collect(Collectors.toSet());
+    }
+
+    public void addRole(Role role){
+        roles.add(role.getId());
     }
 }
