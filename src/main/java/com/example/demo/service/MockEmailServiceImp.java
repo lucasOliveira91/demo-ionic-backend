@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Custumer;
 import com.example.demo.domain.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,5 +41,10 @@ public class MockEmailServiceImp implements EmailService {
         log.info("Email HTML Simulation.");
         log.info(msg.toString());
         log.info("Email sent.   ");
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Custumer custumer, String newPass) {
+        log.info("Email new pass Simulation.");
     }
 }

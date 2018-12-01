@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Custumer;
 import com.example.demo.domain.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,23 @@ public class EmailServiceImp implements EmailService {
         log.info("Sending email... to: ");
         javaMailSender.send(msg);
         log.info("Email sent.");
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Custumer custumer, String newPass) {
+        SimpleMailMessage sm = prepareNewPasswordEmail(custumer, newPass);
+        sendEmail(sm);
+    }
+
+    private SimpleMailMessage prepareNewPasswordEmail(Custumer custumer, String newPass) {
+        SimpleMailMessage sm = new SimpleMailMessage();
+//        sm.setTo(order.getCustumer().getEmail());
+        sm.setTo("lukys.taylor@gmail.com");
+        sm.setFrom(sender);
+        sm.setSubject("New Email    ");
+        sm.setSentDate(new Date(System.currentTimeMillis())); //To take care, that will create the date based from server
+        sm.setText("new pass: " + newPass);
+        return sm;
     }
 
     protected SimpleMailMessage prepareSimpleMailMessageFromOrder(Order order){

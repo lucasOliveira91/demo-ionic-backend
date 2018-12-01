@@ -2,12 +2,17 @@ package com.example.demo.service;
 
 import com.example.demo.domain.*;
 import com.example.demo.domain.enums.PayStatus;
+import com.example.demo.exception.AuthorizationException;
 import com.example.demo.exception.ObjectNotFoundException;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.PaymentRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,5 +79,20 @@ public class OrderService {
         itemRepository.saveAll(obj.getItems());
         emailService.OrderConfirmationEmailHtml(obj);
         return obj;
+    }
+
+    public Page<Order> findAllPageable(Integer page,
+                                          Integer linesPerPage,
+                                          String orderBy,
+                                          String direction) {
+
+        UserSS user = UserService.Authenticated();
+        if(user == null) {
+            throw new AuthorizationException("Access Danied.");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Custumer custumer = custumerService.find(user.getId());
+
+        return orderRepository.findByCustumer(custumer, pageRequest);
     }
 }
