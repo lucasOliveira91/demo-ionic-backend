@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Autowired
 	private OrderItemRepository orderItemRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -84,10 +89,10 @@ public class DemoApplication implements CommandLineRunner {
 
 		productRepository.save(p1);
 
-		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com", "00000000000", CustumerType.PESSOA_FISICA, "123");
+		Custumer cus = new Custumer(null, "Maria da Silva", "maria@gmail.com", "00000000000", CustumerType.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
 		cus.getCelPhones().addAll(Arrays.asList("6134346278", "61992081000"));
 
-		Custumer cus2 = new Custumer(null, "Lucas Daniel", "lukys.taylor@gmail.com", "00000000000", CustumerType.PESSOA_FISICA, "123");
+		Custumer cus2 = new Custumer(null, "Lucas Daniel", "lukys.taylor@gmail.com", "00000000000", CustumerType.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
 		cus2.addRole(Role.ADMIN);
 		cus2.getCelPhones().addAll(Arrays.asList("6134346278", "61992081000"));
 

@@ -36,10 +36,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             CredentialsDTO creds = new ObjectMapper().readValue(req.getInputStream(), CredentialsDTO.class);
             UsernamePasswordAuthenticationToken authToken =  new UsernamePasswordAuthenticationToken(creds.getEmail(),creds.getPassword(), new ArrayList<>());
             Authentication auth = authenticationManager.authenticate(authToken);
+            return auth;
         } catch (IOException e) {
             throw  new RuntimeException(e);
         }
-        return null;
     }
 
     @Override

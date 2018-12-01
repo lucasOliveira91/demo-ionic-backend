@@ -5,13 +5,16 @@ import com.example.demo.domain.City;
 import com.example.demo.domain.Custumer;
 import com.example.demo.domain.Custumer;
 import com.example.demo.domain.enums.CustumerType;
+import com.example.demo.domain.enums.Role;
 import com.example.demo.dto.CustumerDTO;
 import com.example.demo.dto.CustumerNewDTO;
+import com.example.demo.exception.AuthorizationException;
 import com.example.demo.exception.DataIntegrityException;
 import com.example.demo.exception.ObjectNotFoundException;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.CustumerRepository;
 import com.example.demo.repository.CustumerRepository;
+import com.example.demo.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -40,6 +43,12 @@ public class CustumerService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public Custumer find(Integer id) {
+        UserSS user = UserService.Authenticated();
+
+        if(user == null || !user.hasRole(Role.ADMIN) && !user.getId().equals(id)) {
+            throw new AuthorizationException("Access Denied");
+        }
+
         return custumerRepository.findById(id).orElseThrow(() ->
             new ObjectNotFoundException("Object not found! Id:" + id + " " + Custumer.class.getName()));
     }

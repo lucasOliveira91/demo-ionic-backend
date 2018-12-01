@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * This class is responsoble to intercepts the requests, get token and validdate it.
+ * And registers the user in Session Contexts Stateless
  * Created by loliveira on 27/11/18.
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
