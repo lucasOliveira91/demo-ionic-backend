@@ -96,6 +96,21 @@ public class CustumerService {
         return custumerRepository.findAll();
     }
 
+    public Custumer findByEmail(String email) {
+        UserSS user = UserService.Authenticated();
+
+        if(user == null || !user.hasRole(Role.ADMIN) && !user.getUsername().equals(email)) {
+            throw new AuthorizationException("Access Denied");
+        }
+
+        Custumer custumer = custumerRepository.findByEmail(email);
+        if(custumer == null) {
+            throw new ObjectNotFoundException("User not found: " + email + " id: " + user.getId());
+        }
+
+        return custumer;
+    }
+
     public Page<Custumer> findAllPageable(Integer page, Integer linesPerPage, String orderBy, String direction  ) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return custumerRepository.findAll(pageRequest);

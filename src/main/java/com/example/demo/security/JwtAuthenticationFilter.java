@@ -51,5 +51,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String userName = ((UserSS)auth.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(userName);
         res.setHeader("Authorization","Bearer " + token);
+
+        //Enable CORS to allow access to header 'Autorization', it's very important!
+        res.addHeader("access-control-expose-headers", "Authorization");
     }
 }

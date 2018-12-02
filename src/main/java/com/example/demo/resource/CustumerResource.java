@@ -30,6 +30,11 @@ public class CustumerResource {
         return ResponseEntity.ok().body(custumerService.find(id));
     }
 
+    @GetMapping(value = "/email")
+    public ResponseEntity<?> findByEmail(@RequestParam(value = "value") String email) {
+        return ResponseEntity.ok().body(custumerService.findByEmail(email));
+    }
+
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody CustumerNewDTO obj) {
         Custumer objx = custumerService.fromDTO(obj);
