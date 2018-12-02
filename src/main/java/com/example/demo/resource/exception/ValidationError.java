@@ -13,14 +13,13 @@ import java.util.List;
  */
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class ValidationError extends StandardError {
 
     private List<FieldMessage> errors = new ArrayList<>();
 
-    public ValidationError(Integer status, String msg, Long timeStamp) {
-        super(status, msg, timeStamp);
+    public ValidationError(Long timeStamp, Integer status, String error, String message, String path) {
+        super(timeStamp, status, error, message, path);
     }
 
     public void AddError(String fieldName, String message) {

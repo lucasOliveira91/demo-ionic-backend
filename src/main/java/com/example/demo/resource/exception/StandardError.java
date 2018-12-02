@@ -14,7 +14,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StandardError {
 
-    private Integer status;
-    private String msg;
     private Long timeStamp;
+    private Integer status;
+    private String error;
+    private String message;
+    private String path;
 }
