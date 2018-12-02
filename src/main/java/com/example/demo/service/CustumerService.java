@@ -127,7 +127,7 @@ public class CustumerService {
             throw new AuthorizationException("Access Denied.");
         }
 
-        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        BufferedImage jpgImage = imageService.cropAndResize(imageService.getJpgImageFromFile(multipartFile));
         String fileName = prefix + user.getId() + ".jpg";
 
         return s3Service.uploadFile(fileName, imageService.getInputStream(jpgImage, "jpg"), "image");

@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.exception.FileException;
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,9 @@ import java.io.InputStream;
  */
 @Service
 public class ImageService {
+
+    @Value("${img.profile.size}")
+    private int size;
 
     public BufferedImage getJpgImageFromFile (MultipartFile multipartFile) {
         String ext = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
@@ -54,5 +59,24 @@ public class ImageService {
         } catch (IOException e) {
             throw new FileException("Error to read file.");
         }
+    }
+
+    public BufferedImage cropSquare(BufferedImage sourceImg) {
+        int min = sourceImg.getHeight() <= sourceImg.getWidth() ? sourceImg.getHeight() : sourceImg.getWidth();
+        return Scalr.crop(sourceImg,
+                (sourceImg.getHeight() / 2) - (min / 2),
+                (sourceImg.getHeight() / 2) - (min / 2),
+                min,
+                min);
+    }
+
+    public BufferedImage resize(BufferedImage sourceImg, int size) {
+        return Scalr.resize(sourceImg, Scalr.Method.ULTRA_QUALITY, size);
+    }
+
+
+    public BufferedImage cropAndResize(BufferedImage sourceImg){
+        BufferedImage bufferedImage = cropSquare(sourceImg);
+        return resize(bufferedImage, size);
     }
 }

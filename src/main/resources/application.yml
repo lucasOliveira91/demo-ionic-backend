@@ -19,4 +19,6 @@ s3:
   bucket: architect-spring
   region: sa-east-1
 
-img.prefix.client.profile: cp
+img:
+  prefix.client.profile: cp
+  profile.size: 200
