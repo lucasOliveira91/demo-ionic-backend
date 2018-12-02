@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.domain.Address;
 import com.example.demo.domain.City;
 import com.example.demo.domain.Custumer;
-import com.example.demo.domain.Custumer;
 import com.example.demo.domain.enums.CustumerType;
 import com.example.demo.domain.enums.Role;
 import com.example.demo.dto.CustumerDTO;
@@ -13,7 +12,6 @@ import com.example.demo.exception.DataIntegrityException;
 import com.example.demo.exception.ObjectNotFoundException;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.CustumerRepository;
-import com.example.demo.repository.CustumerRepository;
 import com.example.demo.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,9 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -41,6 +40,9 @@ public class CustumerService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private S3Service s3Service;
 
     public Custumer find(Integer id) {
         UserSS user = UserService.Authenticated();
@@ -109,5 +111,9 @@ public class CustumerService {
         }
 
         return custumer;
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 }

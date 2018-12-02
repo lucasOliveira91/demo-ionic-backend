@@ -9,4 +9,12 @@ default:
 #miliseconds
 jwt:
   secret: CaractererSequence
-  expiration: 60000
+  expiration: 86400000
+
+#AWS - S3 - Storage
+aws:
+  access_key_id:
+  secret_access_key:
+s3:
+  bucket: architect-spring
+  region: sa-east-1

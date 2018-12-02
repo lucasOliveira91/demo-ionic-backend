@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -60,5 +61,11 @@ public class CustumerResource {
                                                       @RequestParam(value = "direction", defaultValue = "ASC") String direction ) {
         Page<Custumer> list = custumerService.findAllPageable(page, linesPerPage, orderBy, direction);
         return ResponseEntity.ok().body(list.map(obj -> new CustumerDTO(obj)));
+    }
+
+    @PostMapping(value = "/picture")
+    public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file){
+        URI uri = custumerService.uploadProfilePicture(file);
+        return ResponseEntity.created(uri).build();
     }
 }
