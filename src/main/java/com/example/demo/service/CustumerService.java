@@ -14,6 +14,7 @@ import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.CustumerRepository;
 import com.example.demo.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 
@@ -43,6 +45,12 @@ public class CustumerService {
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
 
     public Custumer find(Integer id) {
         UserSS user = UserService.Authenticated();
@@ -114,6 +122,14 @@ public class CustumerService {
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile) {
-        return s3Service.uploadFile(multipartFile);
+        UserSS user = UserService.Authenticated();
+        if(user == null) {
+            throw new AuthorizationException("Access Denied.");
+        }
+
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
+
+        return s3Service.uploadFile(fileName, imageService.getInputStream(jpgImage, "jpg"), "image");
     }
 }

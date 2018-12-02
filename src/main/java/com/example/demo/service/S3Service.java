@@ -5,6 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.demo.exception.FileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,18 +39,18 @@ public class S3Service {
             String contentType = multipartFile.getContentType();
             return uploadFile(fileName, is, contentType);
         }catch (IOException ex) {
-            throw new RuntimeException("IO Error" + ex.getMessage());
+            throw new FileException("IO Error" + ex.getMessage());
         }
     }
 
-    private URI uploadFile(String fileName, InputStream is, String contentType) {
+    public URI uploadFile(String fileName, InputStream is, String contentType) {
         try{
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);
             s3Client.putObject(bucketName, fileName, is, objectMetadata);
             return s3Client.getUrl(bucketName, fileName).toURI();
         }catch (URISyntaxException ex){
-            throw new RuntimeException("Error to convert URL to URI. " + ex.getMessage());
+            throw new FileException("Error to convert URL to URI. " + ex.getMessage());
         }
     }
 }
