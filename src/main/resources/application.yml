@@ -1,6 +1,7 @@
 spring:
   profileS:
     active: dev
+  servlet.multipart.max.file.size: 10MB
 
 default:
   sender: lukys.taylor@gmail.com
