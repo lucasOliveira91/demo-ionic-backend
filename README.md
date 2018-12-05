@@ -7,3 +7,4 @@
 - Email Service
 - Email Template with Tymeleaf
 - File upload using AWS A3 Service
+- Resize Images with Scarl
