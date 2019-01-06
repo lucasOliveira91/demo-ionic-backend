@@ -2,6 +2,7 @@ package com.example.demo.resource;
 
 import com.example.demo.domain.Category;
 import com.example.demo.dto.CategoryDTO;
+import com.example.demo.resource.swagger.CategorySwagger;
 import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/category")
-public class CategoryResource {
+public class CategoryResource implements CategorySwagger{
 
     @Autowired
     private CategoryService categoryService;
